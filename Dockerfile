@@ -7,7 +7,6 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy toàn bộ source code và build
 COPY src ./src
 RUN mvn clean package -DskipTests
 
@@ -19,8 +18,6 @@ WORKDIR /app
 # Copy file JAR từ stage build sang stage run
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose cổng ứng dụng
 EXPOSE 8080
 
-# Lệnh chạy ứng dụng
 ENTRYPOINT ["java", "-jar", "app.jar"]

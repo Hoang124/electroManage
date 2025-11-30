@@ -16,11 +16,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    private static final String[] WHITE_LIST = {
+            "/auth/login",
+            "/auth/register",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**"
+    };
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello").permitAll()
+                        .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .build();
